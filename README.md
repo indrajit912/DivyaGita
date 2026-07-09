@@ -48,7 +48,7 @@ divyagita/
 ├── data/              # Source Bhagavad Gita JSON data (chapters, verses)
 ├── migrations/        # Database migration files (Flask-Migrate)
 ├── config.py          # Production & Development environment configs
-├── manage.py          # App entrypoint
+├── wsgi.py            # WSGI and App Entrypoint
 ├── requirements.txt   # Dependencies manifest
 └── README.md          # Documentation
 ```
@@ -115,11 +115,7 @@ Follow the prompts to supply your Username, Email, Name, and Password.
 
 ## Development Workflow
 
-To run the Flask development server locally:
-```bash
-python manage.py
-```
-Or use the Flask utility CLI:
+To run the Flask development server locally, use the standard Flask utility CLI:
 ```bash
 flask run
 ```
@@ -132,7 +128,7 @@ The application will be accessible at: `http://127.0.0.1:5000`
 To deploy DivyaGita in a production environment (such as PythonAnywhere or Render):
 1. Configure environment variables in the host server panel (`FLASK_ENV=production`, `DATABASE_URL` for Postgres/MySQL if applicable, and Hermes credentials).
 2. Set the `SESSION_COOKIE_SECURE=True` parameter (enabled automatically under `ProductionConfig`).
-3. Set up a WSGI server (such as Gunicorn or uWSGI) pointing to the `app` instance in `manage.py`.
+3. Set up a WSGI server (such as Gunicorn or uWSGI) pointing to the `app` instance in `wsgi.py`.
 4. Ensure files under `data/` are readable by the server process.
 
 ---

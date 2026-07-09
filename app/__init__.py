@@ -8,12 +8,15 @@ def create_app(config_name=None):
     app = Flask(__name__, instance_relative_config=True)
     
     if not config_name:
-        flask_env = os.environ.get('FLASK_ENV')
-        if flask_env:
-            config_name = flask_env
+        is_debug = os.environ.get('FLASK_DEBUG', '0').lower() in ('1', 'true', 'yes')
+        if is_debug:
+            config_name = 'development'
         else:
-            is_debug = os.environ.get('FLASK_DEBUG', '0').lower() in ('1', 'true', 'yes')
-            config_name = 'development' if is_debug else 'production'
+            flask_env = os.environ.get('FLASK_ENV')
+            if flask_env:
+                config_name = flask_env
+            else:
+                config_name = 'production'
             
     app.config.from_object(config_by_name[config_name])
     
