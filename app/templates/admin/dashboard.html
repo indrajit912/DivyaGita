@@ -1,0 +1,150 @@
+{% extends 'base.html' %}
+
+{% block title %}Admin Dashboard - DivyaGita{% endblock %}
+
+{% block content %}
+<!-- Admin Navigation Breadcrumb -->
+<nav aria-label="breadcrumb" class="mb-4">
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a href="{{ url_for('main.index') }}" class="text-warning text-decoration-none">Home</a></li>
+        <li class="breadcrumb-item active" aria-current="page">Admin Dashboard</li>
+    </ol>
+</nav>
+
+<div class="row mb-4">
+    <div class="col text-center text-md-start">
+        <h1 class="h2 mb-1"><i class="bi bi-speedometer2 text-warning"></i> Admin Dashboard</h1>
+        <p class="text-muted">Overview of the system, users, and content contributions.</p>
+    </div>
+</div>
+
+<!-- Admin Sub-Navigation Menu -->
+<div class="row mb-5">
+    <div class="col-12">
+        <div class="card card-premium p-3">
+            <div class="d-flex flex-wrap gap-2 justify-content-center justify-content-md-start">
+                <a href="{{ url_for('admin.dashboard') }}" class="btn btn-sm btn-saffron">
+                    <i class="bi bi-speedometer2"></i> Overview
+                </a>
+                <a href="{{ url_for('admin.manage_users') }}" class="btn btn-sm btn-outline-saffron">
+                    <i class="bi bi-people"></i> Manage Users
+                </a>
+                <a href="{{ url_for('admin.manage_explanations') }}" class="btn btn-sm btn-outline-saffron">
+                    <i class="bi bi-chat-square-text"></i> Moderate Explanations
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Stat Cards Grid -->
+<div class="row g-4 mb-5">
+    <div class="col-6 col-lg-3">
+        <div class="card card-premium text-center p-4">
+            <i class="bi bi-people-fill text-warning display-5 mb-2"></i>
+            <h3 class="h2 mb-1 fw-bold">{{ total_users }}</h3>
+            <span class="text-muted small text-uppercase fw-semibold">Total Users</span>
+        </div>
+    </div>
+    
+    <div class="col-6 col-lg-3">
+        <div class="card card-premium text-center p-4">
+            <i class="bi bi-journal-text text-warning display-5 mb-2"></i>
+            <h3 class="h2 mb-1 fw-bold">{{ total_explanations }}</h3>
+            <span class="text-muted small text-uppercase fw-semibold">Explanations</span>
+        </div>
+    </div>
+    
+    <div class="col-6 col-lg-3">
+        <div class="card card-premium text-center p-4">
+            <i class="bi bi-book-half text-warning display-5 mb-2"></i>
+            <h3 class="h2 mb-1 fw-bold">{{ total_chapters }}</h3>
+            <span class="text-muted small text-uppercase fw-semibold">Chapters</span>
+        </div>
+    </div>
+    
+    <div class="col-6 col-lg-3">
+        <div class="card card-premium text-center p-4">
+            <i class="bi bi-music-note-list text-warning display-5 mb-2"></i>
+            <h3 class="h2 mb-1 fw-bold">{{ total_verses }}</h3>
+            <span class="text-muted small text-uppercase fw-semibold">Total Verses</span>
+        </div>
+    </div>
+</div>
+
+<div class="row g-4 mb-5">
+    <!-- Recent Users Table Card -->
+    <div class="col-lg-5">
+        <div class="card card-premium p-4 h-100">
+            <div class="d-flex justify-content-between align-items-center border-bottom pb-2 mb-3">
+                <h2 class="h5 mb-0"><i class="bi bi-person-plus text-warning"></i> Recent Users</h2>
+                <a href="{{ url_for('admin.manage_users') }}" class="text-warning small text-decoration-none fw-semibold">View All</a>
+            </div>
+            
+            {% if recent_users %}
+                <div class="table-responsive">
+                    <table class="table table-hover align-middle small mb-0">
+                        <thead>
+                            <tr>
+                                <th>Username</th>
+                                <th>Role</th>
+                                <th>Status</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for u in recent_users %}
+                                <tr>
+                                    <td>
+                                        <div class="fw-semibold">{{ u.username }}</div>
+                                        <div class="text-muted text-truncate" style="max-width: 140px;">{{ u.email }}</div>
+                                    </td>
+                                    <td>
+                                        <span class="badge {{ 'bg-danger' if u.is_admin else 'bg-secondary' }} small">{{ u.role.name }}</span>
+                                    </td>
+                                    <td>
+                                        <span class="badge {{ 'bg-success' if u.is_active else 'bg-warning' }} small">
+                                            {{ 'Active' if u.is_active else 'Deactivated' }}
+                                        </span>
+                                    </td>
+                                </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            {% else %}
+                <p class="text-muted small my-3 text-center">No users registered yet.</p>
+            {% endif %}
+        </div>
+    </div>
+    
+    <!-- Recent Explanations Card -->
+    <div class="col-lg-7">
+        <div class="card card-premium p-4 h-100">
+            <div class="d-flex justify-content-between align-items-center border-bottom pb-2 mb-3">
+                <h2 class="h5 mb-0"><i class="bi bi-chat-left-quote text-warning"></i> Recent Explanations</h2>
+                <a href="{{ url_for('admin.manage_explanations') }}" class="text-warning small text-decoration-none fw-semibold">View All</a>
+            </div>
+            
+            {% if recent_explanations %}
+                <div class="d-flex flex-column gap-3">
+                    {% for exp in recent_explanations %}
+                        <div class="p-3 bg-light rounded border-start border-warning border-3 small position-relative">
+                            <div class="d-flex justify-content-between mb-2">
+                                <span class="fw-semibold text-dark"><i class="bi bi-person"></i> {{ exp.user.username }}</span>
+                                <span class="text-muted"><i class="bi bi-journal-bookmark-fill"></i> Verse {{ exp.verse.chapter.chapter_number }}.{{ exp.verse.verse_number }}</span>
+                            </div>
+                            <p class="text-muted mb-2 text-truncate">{{ exp.content }}</p>
+                            <div class="d-flex justify-content-between align-items-center mt-2 pt-2 border-top border-light">
+                                <span class="text-muted small"><i class="bi bi-calendar3"></i> {{ exp.created_at.strftime('%Y-%m-%d') }}</span>
+                                <a href="{{ url_for('gita.verse_detail', chapter_num=exp.verse.chapter.chapter_number, verse_num=exp.verse.verse_number) }}" class="btn btn-xs btn-outline-saffron px-2 py-0 fs-8">View Verse</a>
+                            </div>
+                        </div>
+                    {% endfor %}
+                </div>
+            {% else %}
+                <p class="text-muted small my-3 text-center">No explanations submitted yet.</p>
+            {% endif %}
+        </div>
+    </div>
+</div>
+{% endblock %}

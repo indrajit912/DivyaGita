@@ -1,0 +1,146 @@
+{% extends 'base.html' %}
+
+{% block title %}Register Contributor - DivyaGita{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center my-4">
+    <div class="col-md-8 col-lg-7">
+        <div class="card card-premium p-4 shadow-sm">
+            <div class="text-center mb-4">
+                <i class="bi bi-person-plus-fill text-warning display-4"></i>
+                <h1 class="h3 mt-2">Become a Contributor</h1>
+                <p class="text-muted small">Register an account to contribute your own explanations and commentaries for Gita verses.</p>
+            </div>
+
+            <!-- Prominent Privacy Notice -->
+            <div class="alert alert-info border-0 shadow-sm mb-4" style="background-color: rgba(13, 110, 253, 0.05); color: #0d6efd;">
+                <h5 class="alert-heading fw-bold d-flex align-items-center gap-2 small mb-2">
+                    <i class="bi bi-shield-shaded"></i> PRIVACY NOTICE & SECURE DATA GUARANTEE
+                </h5>
+                <p class="mb-0 small leading-relaxed">
+                    We value your privacy. Your **Email Address**, **Contact Number**, and **Address** are stored securely and will **never** be displayed publicly on this website. 
+                    Only system administrators can access this information for moderation purposes. Your public identity on DivyaGita will be your **Username** only.
+                </p>
+            </div>
+            
+            <form method="POST" action="">
+                {{ form.hidden_tag() }}
+                
+                <div class="row g-3">
+                    <div class="col-md-6">
+                        <label for="name" class="form-label fw-medium">{{ form.name.label }} <span class="text-danger">*</span></label>
+                        {{ form.name(class="form-control" + (" is-invalid" if form.name.errors else ""), placeholder="e.g. John Doe") }}
+                        {% if form.name.errors %}
+                            <div class="invalid-feedback">
+                                {% for error in form.name.errors %}
+                                    {{ error }}
+                                {% endfor %}
+                            </div>
+                        {% endif %}
+                    </div>
+                    
+                    <div class="col-md-6">
+                        <label for="username" class="form-label fw-medium">{{ form.username.label }} <span class="text-danger">*</span></label>
+                        {{ form.username(class="form-control" + (" is-invalid" if form.username.errors else ""), placeholder="e.g. johndoe") }}
+                        {% if form.username.errors %}
+                            <div class="invalid-feedback">
+                                {% for error in form.username.errors %}
+                                    {{ error }}
+                                {% endfor %}
+                            </div>
+                        {% endif %}
+                    </div>
+
+                    <div class="col-12">
+                        <label for="email" class="form-label fw-medium">{{ form.email.label }} <span class="text-danger">*</span></label>
+                        {{ form.email(class="form-control" + (" is-invalid" if form.email.errors else ""), placeholder="e.g. email@example.com") }}
+                        <div class="form-text text-muted small"><i class="bi bi-lock-fill text-warning"></i> Never shared publicly.</div>
+                        {% if form.email.errors %}
+                            <div class="invalid-feedback">
+                                {% for error in form.email.errors %}
+                                    {{ error }}
+                                {% endfor %}
+                            </div>
+                        {% endif %}
+                    </div>
+
+                    <div class="col-md-6">
+                        <label for="password" class="form-label fw-medium">{{ form.password.label }} <span class="text-danger">*</span></label>
+                        {{ form.password(class="form-control" + (" is-invalid" if form.password.errors else ""), placeholder="Min 8 characters") }}
+                        {% if form.password.errors %}
+                            <div class="invalid-feedback">
+                                {% for error in form.password.errors %}
+                                    {{ error }}
+                                {% endfor %}
+                            </div>
+                        {% endif %}
+                    </div>
+                    
+                    <div class="col-md-6">
+                        <label for="confirm_password" class="form-label fw-medium">{{ form.confirm_password.label }} <span class="text-danger">*</span></label>
+                        {{ form.confirm_password(class="form-control" + (" is-invalid" if form.confirm_password.errors else ""), placeholder="Retype password") }}
+                        {% if form.confirm_password.errors %}
+                            <div class="invalid-feedback">
+                                {% for error in form.confirm_password.errors %}
+                                    {{ error }}
+                                {% endfor %}
+                            </div>
+                        {% endif %}
+                    </div>
+
+                    <div class="col-12">
+                        <label for="contact_number" class="form-label fw-medium">{{ form.contact_number.label }}</label>
+                        {{ form.contact_number(class="form-control" + (" is-invalid" if form.contact_number.errors else ""), placeholder="e.g. +91 9876543210") }}
+                        <div class="form-text text-muted small"><i class="bi bi-lock-fill text-warning"></i> Optional. Never shared publicly.</div>
+                        {% if form.contact_number.errors %}
+                            <div class="invalid-feedback">
+                                {% for error in form.contact_number.errors %}
+                                    {{ error }}
+                                {% endfor %}
+                            </div>
+                        {% endif %}
+                    </div>
+
+                    <div class="col-12">
+                        <label for="address" class="form-label fw-medium">{{ form.address.label }}</label>
+                        {{ form.address(class="form-control" + (" is-invalid" if form.address.errors else ""), rows=2, placeholder="Optional postal/contact address") }}
+                        <div class="form-text text-muted small"><i class="bi bi-lock-fill text-warning"></i> Optional. Never shared publicly.</div>
+                        {% if form.address.errors %}
+                            <div class="invalid-feedback">
+                                {% for error in form.address.errors %}
+                                    {{ error }}
+                                {% endfor %}
+                            </div>
+                        {% endif %}
+                    </div>
+
+                    <div class="col-12 mt-4">
+                        <div class="form-check">
+                            {{ form.privacy_agreement(class="form-check-input" + (" is-invalid" if form.privacy_agreement.errors else "")) }}
+                            <label class="form-check-label text-muted small fw-medium" for="privacy_agreement">
+                                I confirm that my details are accurate, and I agree to the <span class="text-warning fw-bold">Privacy Policy</span> regarding my private data.
+                            </label>
+                            {% if form.privacy_agreement.errors %}
+                                <div class="invalid-feedback">
+                                    {% for error in form.privacy_agreement.errors %}
+                                        {{ error }}
+                                    {% endfor %}
+                                </div>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+
+                <div class="d-grid gap-2 mt-4">
+                    {{ form.submit(class="btn btn-saffron py-2") }}
+                </div>
+            </form>
+            
+            <div class="text-center mt-4 pt-3 border-top">
+                <span class="text-muted small">Already registered?</span>
+                <a href="{{ url_for('auth.login') }}" class="text-warning small fw-bold text-decoration-none ms-1">Log In Instead</a>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

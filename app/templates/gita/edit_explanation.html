@@ -1,0 +1,57 @@
+{% extends 'base.html' %}
+
+{% block title %}Edit Explanation - DivyaGita{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center my-4">
+    <div class="col-lg-8">
+        <!-- Navigation Breadcrumbs -->
+        <nav aria-label="breadcrumb" class="mb-4">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="{{ url_for('main.index') }}" class="text-warning text-decoration-none">Home</a></li>
+                <li class="breadcrumb-item"><a href="{{ url_for('gita.verse_detail', chapter_num=explanation.verse.chapter.chapter_number, verse_num=explanation.verse.verse_number) }}" class="text-warning text-decoration-none">Verse {{ explanation.verse.chapter.chapter_number }}.{{ explanation.verse.verse_number }}</a></li>
+                <li class="breadcrumb-item active" aria-current="page">Edit Explanation</li>
+            </ol>
+        </nav>
+        
+        <div class="card card-premium p-4 mb-4">
+            <h1 class="h3 text-warning border-bottom pb-2 mb-4"><i class="bi bi-pencil-square"></i> Edit Explanation</h1>
+            
+            <!-- Verse Preview -->
+            <div class="alert alert-light border mb-4 bg-light bg-opacity-50">
+                <h5 class="alert-heading text-warning small fw-bold">Verse {{ explanation.verse.chapter.chapter_number }}.{{ explanation.verse.verse_number }} Preview</h5>
+                <p class="sanskrit-text text-start text-dark mb-2" style="font-size: 1.1rem; line-height: 1.8;">
+                    {{ explanation.verse.sanskrit | replace('\n', '<br>') | safe }}
+                </p>
+                <hr class="my-2 border-warning border-opacity-25">
+                <p class="text-muted small mb-0">{{ explanation.verse.translations[0].content | truncate(150, true) }}</p>
+            </div>
+            
+            <form method="POST" action="">
+                {{ form.hidden_tag() }}
+                
+                <div class="mb-3">
+                    <label for="content" class="form-label fw-semibold">Your Explanation / Commentary</label>
+                    {{ form.content(class="form-control" + (" is-invalid" if form.content.errors else ""), rows=8) }}
+                    {% if form.content.errors %}
+                        <div class="invalid-feedback">
+                            {% for error in form.content.errors %}
+                                {{ error }}
+                            {% endfor %}
+                        </div>
+                    {% endif %}
+                </div>
+                
+                <div class="d-flex justify-content-between">
+                    <a href="{{ url_for('gita.verse_detail', chapter_num=explanation.verse.chapter.chapter_number, verse_num=explanation.verse.verse_number) }}" class="btn btn-outline-secondary">
+                        Cancel
+                    </a>
+                    <button type="submit" class="btn btn-saffron px-4">
+                        Save Changes
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}

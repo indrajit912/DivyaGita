@@ -1,0 +1,18 @@
+{% extends 'base.html' %}
+
+{% block title %}Bad Request - DivyaGita{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center my-5 py-5">
+    <div class="col-md-6 text-center">
+        <h1 class="display-1 text-danger fw-bold mb-3"><i class="bi bi-x-circle-fill"></i> 400</h1>
+        <h2 class="h3 mb-4">Bad Request</h2>
+        <p class="text-muted mb-5">
+            The request could not be understood or processed by the server due to malformed syntax.
+        </p>
+        <a href="{{ url_for('main.index') }}" class="btn btn-saffron px-4 py-2">
+            <i class="bi bi-house-door-fill"></i> Go to Home
+        </a>
+    </div>
+</div>
+{% endblock %}

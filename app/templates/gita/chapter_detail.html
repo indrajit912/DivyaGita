@@ -1,0 +1,97 @@
+{% extends 'base.html' %}
+
+{% block title %}{{ chapter.translation }} - Chapter {{ chapter.chapter_number }} - DivyaGita{% endblock %}
+
+{% block content %}
+<!-- Chapter Header and Info Card -->
+<div class="row justify-content-center my-4">
+    <div class="col-lg-10">
+        <!-- Navigation Breadcrumb -->
+        <nav aria-label="breadcrumb" class="mb-4">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="{{ url_for('main.index') }}" class="text-warning text-decoration-none">Home</a></li>
+                <li class="breadcrumb-item active" aria-current="page">Chapter {{ chapter.chapter_number }}</li>
+            </ol>
+        </nav>
+        
+        <!-- Premium Chapter Intro Banner -->
+        <div class="card card-premium p-4 p-md-5 mb-5 bg-dark text-white border-0 overflow-hidden position-relative shadow">
+            <!-- Background opacity ornament -->
+            <div class="position-absolute top-50 start-50 translate-middle text-warning" style="font-size: 15rem; font-family: var(--devanagari-font); pointer-events: none; z-index: 1; opacity: 0.2;">
+                ॐ
+            </div>
+            
+            <div class="position-relative" style="z-index: 2;">
+                <div class="d-flex justify-content-between align-items-center mb-3">
+                    <span class="badge badge-saffron">Chapter {{ chapter.chapter_number }}</span>
+                    <span class="text-warning fw-semibold"><i class="bi bi-patch-question-fill"></i> {{ chapter.verses_count }} Verses</span>
+                </div>
+                <h1 class="display-5 text-warning mb-1">{{ chapter.translation }}</h1>
+                <h2 class="h5 text-white-50 font-monospace mb-3">{{ chapter.name }} | {{ chapter.transliteration }}</h2>
+                <h3 class="h6 text-warning mb-4"><i class="bi bi-compass"></i> Significance: {{ chapter.meaning }}</h3>
+                <hr class="border-warning border-opacity-25 mb-4">
+                <p class="lead small text-light text-opacity-90 mb-0 leading-relaxed">{{ chapter.summary }}</p>
+            </div>
+        </div>
+
+        <!-- Verse Section Header -->
+        <div class="d-flex justify-content-between align-items-center mb-4 border-bottom pb-2">
+            <h2 class="h3 mb-0 text-slate-800"><i class="bi bi-journals text-warning"></i> Verses (Shlokas)</h2>
+            <span class="text-muted small">Select a verse for translation & explanations</span>
+        </div>
+
+        <!-- Verses List -->
+        <div class="row g-3 mb-5">
+            {% for v in verses %}
+                <div class="col-12">
+                    <div class="card card-premium p-4">
+                        <div class="row align-items-center">
+                            <div class="col-md-2 text-md-center mb-3 mb-md-0 border-end border-light">
+                                <span class="badge badge-saffron fs-6">Verse {{ chapter.chapter_number }}.{{ v.verse_number }}</span>
+                            </div>
+                            <div class="col-md-8 px-md-4 mb-3 mb-md-0">
+                                <p class="sanskrit-text text-start text-dark mb-2" style="font-size: 1.15rem; line-height: 1.8;">
+                                    {{ v.sanskrit | replace('\n', '<br>') | safe }}
+                                </p>
+                                {% if v.translations %}
+                                    <p class="text-muted small mb-0 font-italic text-truncate">
+                                        {{ v.translations[0].content | truncate(180, true) }}
+                                    </p>
+                                {% endif %}
+                            </div>
+                            <div class="col-md-2 text-md-end">
+                                <a href="{{ url_for('gita.verse_detail', chapter_num=chapter.chapter_number, verse_num=v.verse_number) }}" class="btn btn-sm btn-saffron px-3 w-100">
+                                    Read Info <i class="bi bi-chevron-right"></i>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+
+        <!-- Bottom Page Navigation -->
+        <div class="d-flex justify-content-between align-items-center mt-5 pt-3 border-top">
+            {% if prev_chapter %}
+                <a href="{{ url_for('gita.chapter_detail', chapter_num=prev_chapter.chapter_number) }}" class="btn btn-outline-saffron">
+                    <i class="bi bi-arrow-left"></i> Ch {{ prev_chapter.chapter_number }}: {{ prev_chapter.translation }}
+                </a>
+            {% else %}
+                <div></div>
+            {% endif %}
+
+            <a href="{{ url_for('main.index') }}" class="btn btn-sm btn-outline-secondary">
+                <i class="bi bi-grid-fill"></i> All Chapters
+            </a>
+
+            {% if next_chapter %}
+                <a href="{{ url_for('gita.chapter_detail', chapter_num=next_chapter.chapter_number) }}" class="btn btn-outline-saffron">
+                    Ch {{ next_chapter.chapter_number }}: {{ next_chapter.translation }} <i class="bi bi-arrow-right"></i>
+                </a>
+            {% else %}
+                <div></div>
+            {% endif %}
+        </div>
+    </div>
+</div>
+{% endblock %}
