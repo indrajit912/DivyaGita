@@ -97,20 +97,19 @@ HERMES_EMAILBOT_ID=your-hermes-bot-id
 
 ## Database Setup & Administration Commands
 
-DivyaGita features automated database seed tools. Ensure your virtual environment is active, then run:
+Ensure your virtual environment is active, then initialize the database and create the first administrator account using the following workflow:
 
-### Step A: Populate Gita Content & Schema
-Run the custom setup CLI command to build all tables and import the entire Bhagavad Gita from `data/chapters.json` and `data/verses.json`:
 ```bash
+# 1. Run migrations to create the database schema and tables
+flask db upgrade
+
+# 2. Populate the database with the complete Bhagavad Gita dataset
 flask setup-db
-```
 
-### Step B: Create Administrator Account
-Register a superuser account interactively:
-```bash
+# 3. Create the administrator account interactively
 flask create-admin
 ```
-Follow the prompt to supply your Username, Email, Name, and Password.
+Follow the prompts to supply your Username, Email, Name, and Password.
 
 ---
 
